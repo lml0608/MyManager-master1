@@ -1,5 +1,6 @@
 package com.bignerdranch.android.mymanager.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -60,6 +61,15 @@ public class UtilsApp {
             e.printStackTrace();
         }
         return res;
+    }
+
+
+    public static void goToGooglePlay(Context context, String id) {
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + id)));
+        } catch (ActivityNotFoundException e) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + id)));
+        }
     }
 
     /**

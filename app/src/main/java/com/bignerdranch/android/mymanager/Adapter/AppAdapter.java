@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.ActivityChooserView;
@@ -177,7 +178,15 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.AppHolder> {
 //                //Bitmap bitmap = ((BitmapDrawable) appInfo.getIcon()).getBitmap();
 //                //bundle.putSerializable("app_icon", bitmap);
 //                bundle.putSerializable("app_isSystem", appInfo.isSystem());
-                mContext.startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    String transitionName = mContext.getResources().getString(R.string.transition_app_icon);
+
+                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(activity, appIcon, transitionName);
+                    mContext.startActivity(intent, transitionActivityOptions.toBundle());
+                } else {
+                    mContext.startActivity(intent);
+                    activity.overridePendingTransition(R.anim.slide_in_right, R.anim.fade_back);
+                }
 
 
 //                intent.putExtra("app_name", appInfo.getName());
